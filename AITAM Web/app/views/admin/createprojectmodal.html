@@ -1,0 +1,70 @@
+<div class="modal-header">
+    <h3 class="modal-title">Create New Project</h3>
+</div>
+<div class="modal-body">
+    <table class="table-hover table-condensed table-responsive">
+        <tr>
+            <td>
+                Category
+            </td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="projectCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        {{project.category || 'Select'}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="projectCategory">
+                        <li ng-repeat="category in projectCategory" ng-click="project.category=category"><a href="#">{{category}}</a></li>
+                    </ul>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td>Title</td>
+            <td>
+                <div class="form-group" ng-class="{'has-error': wrongPassword}">
+                    <input type="text" class="form-control" id="title" name="title" ng-model="project.title" placeholder="Enter the Project Title" required>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+
+    <table class="table table-hover table-condensed table-responsive">
+        <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>End DAte</th>
+                <th>Working Days</th>
+            </tr>
+        </thead>
+        <!--                    Expected Days-->
+        <tbody>
+            <tr>
+                <td>
+                    <p class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup="dd-MMM" ng-model="project.startDate" is-open="popupStart.opened" min-date="{{today}}" close-text="Close" ng-change="dateChange()" ng-click="openStart()" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openStart()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </td>
+                <td>
+                    <p class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup="dd-MMM" ng-model="project.endDate" is-open="popupEnd.opened" min-date="{{today}}" close-text="Close" ng-change="dateChange()" ng-click="openEnd()" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openEnd()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </td>
+                <td>{{dateChange()}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

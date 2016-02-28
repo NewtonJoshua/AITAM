@@ -1,0 +1,26 @@
+<div class="inner-wrapper content-container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="container-fluid box">
+                <div ui-view="task-count"></div>
+            </div>
+            <div class="container-fluid box">
+                <div ui-view="create-task"></div>
+            </div>
+            <div class="container-fluid box">
+                <div ui-view="perfometer"></div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="container-fluid box">
+                <div ui-view="timesheet"></div>
+            </div>
+            <div class="container-fluid doubleBox">
+                <div ui-view="my-tasks"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid box">
+        <div ui-view="archived-task"></div>
+    </div>
+</div>

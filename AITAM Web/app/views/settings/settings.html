@@ -1,0 +1,26 @@
+<div class="inner-wrapper content-container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="container-fluid box">
+                <div ui-view="rating"></div>
+            </div>
+            <div class="container-fluid box">
+                <div ui-view="project-category"></div>
+            </div>
+            <div class="container-fluid box">
+                <div ui-view="task-category"></div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="container-fluid doubleBox">
+                <div ui-view="employees"></div>
+            </div>
+            <div class="container-fluid doubleBox">
+                <div ui-view="holidays"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid box">
+        <div ui-view="archived-projects"></div>
+    </div>
+</div>

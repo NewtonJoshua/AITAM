@@ -1,0 +1,10 @@
+npm install -g grunt-cli bower yo generator-karma generator-angular
+install ruby
+npm install -g generator-ionic
+gem install compass
+
+yo ionic [app-name]
+https://github.com/diegonetto/generator-ionic
+
+iOS:
+http://www.macbreaker.com/2012/07/mountain-lion-virtualbox.html

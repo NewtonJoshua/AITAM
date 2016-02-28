@@ -1,0 +1,104 @@
+<ion-view view-title="AITAM">
+    <ion-content class="padding">
+        <div class="item-icon-right">
+            <h3>Hi {{user}},  </h3>
+            <button class="button button-icon icon button-clear ion-log-out" ng-click="logoff()">
+            </button>
+            <h4>Welcome to AITAM</h4>
+        </div>
+        <ion-item class="list card">
+            <div class="item item-divider item-icon-right">
+                Your Device Details
+                <i ng-show="platform=='iOS'" class="icon ion-iphone"></i>
+                <i ng-show="platform=='Android'" class="icon ion-android-phone-portrait"></i>
+                <i ng-show="platform=='Windows'" class="icon ion-social-windows"></i>
+            </div>
+            <a class="item item-icon-left">
+                <i ng-show="nw=='wifi'" class="icon ion-wifi"></i> <i ng-hide="nw=='wifi'" class="icon ion-earth"></i>
+                <div class="row">
+                    <div class="col">Network:</div>
+                    <div class="col">{{deviceInfo.network}}</div>
+                </div>
+            </a>
+            <a class="item item-icon-left">
+                <i ng-show="platform=='iOS'" class="icon ion-social-apple"></i> <i ng-show="platform=='Android'" class="icon ion-social-android"></i>
+                <i ng-show="platform=='Windows'" class="icon ion-social-windows"></i>
+                <div class="row">
+                    <div class="col">OS Platform:</div>
+                    <div class="col">{{deviceInfo.platform}} {{currentPlatformVersion}}</div>
+                </div>
+            </a>
+            <a class="item item-icon-left">
+                <i ng-show="platform=='iOS'" class="icon ion-iphone"></i>
+                <i ng-show="platform=='Android'" class="icon ion-android-phone-portrait"></i>
+                <i ng-show="platform=='Windows'" class="icon ion-social-windows"></i>
+                <div class="row">
+                    <div class="col">Device Model:</div>
+                    <div class="col">{{deviceInfo.model}}</div>
+                </div>
+            </a>
+            <a class="item item-icon-left">
+                <i class="icon ion-pound"></i>
+                <div class="row">
+                    <div class="col">Device ID:</div>
+                    <div class="col"> <span class="item-note">{{deviceInfo.uuid}}</span></div>
+                </div>
+            </a>
+            <a class="item item-icon-left">
+                <i class="icon ion-wand"></i>
+                <div class="row">
+                    <div class="col">Push Token:</div>
+                    <div class="col"> <span class="item-note" id="token"></span></div>
+                </div>
+            </a>
+
+            <div class="item item-divider item-icon-right">
+                About AITAM
+                <i class="icon ion-ios-information-outline"></i>
+            </div>
+            <div class="item item-avatar">
+                <img src="img/icon.png">
+                <h2>AITAM</h2>
+                <p>Ation Item Tracking And Management</p>
+            </div>
+            <div class="item item-body">
+                <p>
+                    AITAM is a collaborative tool to help associates to manage and track their action items to completion.
+                    <br> AITAM can be used to Create, Assign, Track, Review and Manage the Action Items of a team.
+                    <br> AITAM is developed using Yeoman, Ionic Framework, AngularJs, HTML5, CSS3, Sass, JS, NodeJs, Git, Chrome DevTools Google App Engine
+                </p>
+
+            </div>
+
+            <div class="item tabs tabs-secondary tabs-icon-left">
+                <a class="tab-item">
+                    <i class="icon ion-social-html5"></i>
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-social-css3"></i>
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-social-javascript"></i>
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-ionic"></i>
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-social-angular"></i>
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-social-nodejs"></i>
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-social-github"></i>
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-social-sass"></i>
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-social-chrome"></i>
+                </a>
+            </div>
+        </ion-item>
+    </ion-content>
+</ion-view>

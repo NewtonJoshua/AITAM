@@ -1,0 +1,75 @@
+<div class="modal-header">
+    <h3 class="modal-title">Create New Task</h3>
+</div>
+<div class="modal-body">
+    <table class="table-hover table-condensed table-responsive">
+        <tr>
+            <td>Category</td>
+            <td>
+                <!--                        Task Category-->
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="taskCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-init="task.priority='Normal'">
+                        {{task.category || 'Select'}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="taskCategory">
+                        <li ng-click="task.category=''"><a href="#">None</a></li>
+                        <li ng-repeat="category in taskCategory" ng-click="task.category=category"><a href="#">{{category}}</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Title</td>
+            <td>
+                <!--                        Task Title-->
+                <input type="text" ng-model="task.title" class="form-control" placeholder="Title">
+            </td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>
+                <!--                        Task Description-->
+                <textarea class="form-control" rows="2" placeholder="Description" ng-model="task.description"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Priority</td>
+            <td>
+                <!--                        Task Priority-->
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="priority" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-init="task.priority='Normal'">
+                        {{task.priority}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="priority">
+                        <li ng-click="task.priority='Low'"><a href="#">Low</a></li>
+                        <li ng-click="task.priority='Normal'"><a href="#">Normal</a></li>
+                        <li ng-click="task.priority='High'"><a href="#">High</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Dependent Task</td>
+            <td>
+                <!--                        Dependent Task-->
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dependentTask" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        {{task.dependentTask || 'None'}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dependentTask">
+                        <li ng-click="task.dependentTask=''"><a href="#">None</a></li>
+                        <li ng-repeat="thisTask in taskList track by $index" ng-click="task.dependentTask=thisTask.id"><a href="#">{{thisTask.id}} : {{thisTask.title}}</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

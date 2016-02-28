@@ -1,0 +1,20 @@
+<div class="inner-wrapper content-container">
+    <div class="container-fluid box">
+        <div ui-view="edit-projects"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="container-fluid box">
+                <div ui-view="review-tasks"></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="container-fluid doubleBox">
+                <div ui-view="open-tasks"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid box">
+        <div ui-view="archived-projects"></div>
+    </div>
+</div>

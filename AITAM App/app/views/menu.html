@@ -1,0 +1,49 @@
+<ion-side-menus>
+    <!-- Left menu -->
+    <ion-side-menu side="left" is-enabled="true">
+        <ion-header-bar class="bar-navy">
+            <h1 class="title" style="color:white">AITAM MENU</h1>
+        </ion-header-bar>
+        <ion-content>
+            <div class="item item-divider">
+                {{user}}
+            </div>
+            <ion-list>
+                <ion-item nav-clear menu-close href="#/app/myTasks" class="item-icon-left">
+                    <i class="icon ion-ios-person-outline"></i> myTask
+                    <span class="badge badge-positive">{{newCount}}</span>
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/ourTasks" ng-show="manager" class="item-icon-left">
+                    <a class="icon ion-ios-people-outline"></a>
+                    ourTask
+                    <span class="badge badge-positive">{{ourReviewCount}}</span>
+                </ion-item>
+
+                <div class="item item-divider" id="time">
+                </div>
+
+                <ion-item nav-clear menu-close href="#/app/main" class="item-icon-left">
+                    Home
+                    <i class="icon ion-ios-home-outline"></i>
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="exitApp()" class="item-icon-left">
+                    I'm done here
+                    <i class="icon ion-log-out"></i>
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-navy">
+            <ion-nav-back-button>
+            </ion-nav-back-button>
+
+            <ion-nav-buttons side="left">
+                <button ng-show="user" class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-click="displayStatus()">
+                </button>
+            </ion-nav-buttons>
+        </ion-nav-bar>
+        <ion-nav-view name=" menuContent "></ion-nav-view>
+    </ion-side-menu-content>
+
+</ion-side-menus>

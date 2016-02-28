@@ -1,0 +1,28 @@
+/* Empty. Add your own CSS if you like */
+
+body {
+    padding: 20px 20px 40px 40px;
+}
+
+.navbar-default {
+    margin-bottom: 20px;
+}
+
+.login {
+    width: 400px;
+    margin: 40px auto;
+}
+
+
+/*
+.box {
+    height: 33%;
+}
+
+.doubleBox {
+    height: 66%;
+}
+
+.content-container {
+    height: 90vh;
+}*/

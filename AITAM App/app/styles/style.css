@@ -1,0 +1,15 @@
+/* Empty. Add your own CSS if you like */
+
+.card .item-divider,
+.button-navy,
+.bar-navy {
+    background: #204060;
+    color: white;
+}
+
+.tab-item.tab-item-active,
+.tab-item.active,
+.tab-item.activated,
+.item-divider {
+    color: #204060;
+}

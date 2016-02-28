@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>AITAM</title>
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet">
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="styles/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/ionic/release/js/ionic.js"></script>
+    <script src="bower_components/ionic/release/js/ionic-angular.js"></script>
+    <script src="bower_components/ngCordova/dist/ng-cordova.js"></script>
+    <script src="bower_components/localforage/dist/localforage.js"></script>
+    <script src="bower_components/angular-localforage/dist/angular-localForage.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!--Socket.io-->
+    <script src="bower_components/socket.io/socket.io.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/google-chart/loader.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <!-- build:js scripts/scripts.js -->
+    <script src="app.js"></script>
+    <script src="scripts/_states.js"></script>
+    <script src="scripts/configuration.js"></script>
+    <script src="scripts/login/login.js"></script>
+    <script src="scripts/login/_states.js"></script>
+    <script src="scripts/profile/profile.js"></script>
+    <script src="scripts/admin/manager.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/task/taskboard.js"></script>
+    <script src="scripts/login/loginservice.js"></script>
+    <script src="scripts/services/socket.js"></script>
+    <script src="scripts/services/userservice.js"></script>
+    <script src="scripts/task/_states.js"></script>
+    <script src="scripts/task/taskcount.js"></script>
+    <script src="scripts/task/create-task.js"></script>
+    <script src="scripts/task/perfometer.js"></script>
+    <script src="scripts/task/timesheet.js"></script>
+    <script src="scripts/task/my-tasks.js"></script>
+    <script src="scripts/task/archived-task.js"></script>
+    <script src="scripts/profile/_states.js"></script>
+    <script src="scripts/profile/my-profile.js"></script>
+    <script src="scripts/profile/notification.js"></script>
+    <script src="scripts/profile/projects.js"></script>
+    <script src="scripts/profile/team.js"></script>
+    <script src="scripts/admin/_states.js"></script>
+    <script src="scripts/admin/editprojet.js"></script>
+    <script src="scripts/admin/review-tasks.js"></script>
+    <script src="scripts/admin/open-tasks.js"></script>
+    <script src="scripts/admin/archived-projects.js"></script>
+    <script src="scripts/settings/_states.js"></script>
+    <script src="scripts/settings/settings.js"></script>
+    <script src="scripts/settings/employees.js"></script>
+    <script src="scripts/settings/holidays.js"></script>
+    <script src="scripts/settings/projet-category.js"></script>
+    <script src="scripts/settings/task-category.js"></script>
+    <script src="scripts/settings/rating.js"></script>
+    <script src="scripts/admin/createprojectmodal.js"></script>
+    <script src="scripts/admin/createtaskmodal.js"></script>
+    <!-- endbuild -->
+    <!--
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js">
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
+<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.1.2.js"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+-->
+</head>
+
+<body ng-app="aitamApp" ng-controller="AppCtrl">
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand">AITAM : Action Item Tracking And Management</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-class="profileActive">
+                        <a ui-sref="app.profile" ng-click="setActive('profileActive')">Profile</a>
+                    </li>
+                    <li ng-class="managerActive">
+                        <a ui-sref="app.manager" ng-click="setActive('managerActive')">Manager</a>
+                    </li>
+                    <li ng-class="setingsActive">
+                        <a ui-sref="app.settings" ng-click="setActive('setingsActive')">Settings</a>
+                    </li>
+                    <li ng-class="taskActive">
+                        <a ui-sref="app.tasks" ng-click="setActive('taskActive')">Tasks</a>
+                    </li>
+                    <li><a ui-sref="app.login">Logout</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+
+        <!--/.container-fluid -->
+    </nav>
+
+    <!--    views-->
+    <div class="container-fluid">
+        <div ui-view></div>
+    </div>
+</body>
+
+
+</html>

@@ -1,0 +1,7 @@
+{
+    "jscodehints.detectedExclusions": [
+        "localforage.js",
+        "A:/AITAM/AITAM Web/app/bower_components/ionic/demos/directive/slideBox/appIntro/test.scenario.js",
+        "A:/AITAM/AITAM Web/app/bower_components/google-chart/loader.js"
+    ]
+}
