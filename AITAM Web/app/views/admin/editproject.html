@@ -28,15 +28,15 @@
                     <dt>Status</dt>
                     <dd>{{selectedProject.status}}</dd>
                     <dt>Start Date</dt>
-                    <dd>{{selectedProject.startDate}}</dd>
+                    <dd>{{selectedProject.startDate | date:'mediumDate'}}</dd>
                     <dt>End Date</dt>
-                    <dd>{{selectedProject.endDate}}</dd>
+                    <dd>{{selectedProject.endDate | date:'mediumDate'}}</dd>
                 </dl>
             </div>
 
             <!--Gant Chart-->
             <div class="col-md-9">
-                <div id="chart_div"></div>
+                <div id="chart_div" class="container-fluid"></div>
             </div>
         </div>
 

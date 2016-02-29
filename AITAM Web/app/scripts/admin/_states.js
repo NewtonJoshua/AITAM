@@ -6,6 +6,10 @@ angular
         $stateProvider
             .state('app.manager', {
                 url: '/manager',
+                parent: 'app',
+                resolve: {
+
+                },
                 views: {
                     '@': {
                         templateUrl: 'views/admin/manager.html',
@@ -17,7 +21,7 @@ angular
                     },
                     'edit-projects@app.manager': {
                         templateUrl: 'views/admin/editproject.html',
-                        controller: 'EditprojetCtrl',
+                        controller: 'EditprojetCtrl'
                     },
                     'open-tasks@app.manager': {
                         templateUrl: 'views/admin/open-tasks.html',
@@ -27,8 +31,7 @@ angular
                         templateUrl: 'views/admin/review-tasks.html',
                         controller: 'ReviewTasksCtrl',
                     }
-                },
-                resolve: {}
+                }
             });
 
     });

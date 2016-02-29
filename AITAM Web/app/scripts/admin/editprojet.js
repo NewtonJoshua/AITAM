@@ -8,26 +8,30 @@
  * Controller of the aitamApp
  */
 angular.module('aitamApp')
-    .controller('EditprojetCtrl', function ($scope, $uibModal) {
-
-
+    .controller('EditprojetCtrl', function ($scope, $uibModal, settings) {
 
         $scope.projects = [{
             id: 1,
             category: 'App',
             title: 'AITAM',
             status: 'Started',
+            startDate: moment('2/28/2016').toDate(),
+            endDate: moment('3/5/2016').toDate(),
             tasks: []
                 }, {
             id: 2,
             category: 'Web Site',
             title: 'Newton Joshua',
             status: 'Created',
+            startDate: moment('2/28/2016').toDate(),
+            endDate: moment('3/5/2016').toDate(),
             tasks: []
                 }, {
             id: 3,
             category: 'Internal',
             title: 'Get Ur App',
+            startDate: moment('2/28/2016').toDate(),
+            endDate: moment('3/5/2016').toDate(),
             status: 'Created',
             tasks: []
                 }];
@@ -69,7 +73,11 @@ angular.module('aitamApp')
             var modalInstance = $uibModal.open({
                 templateUrl: 'views/admin/createprojectmodal.html',
                 controller: 'CreateprojectmodalCtrl',
-                resolve: {}
+                resolve: {
+                    projectCategory: function () {
+                        return settings.projectCategory;
+                    }
+                }
             });
 
             modalInstance.result.then(function (project) {
@@ -89,6 +97,9 @@ angular.module('aitamApp')
                 resolve: {
                     taskList: function () {
                         return $scope.selectedProject.tasks;
+                    },
+                    taskCategory: function () {
+                        return settings.taskCategory;
                     }
                 }
             });
@@ -115,10 +126,6 @@ angular.module('aitamApp')
 
 
         //Gant Chart
-        google.charts.load('current', {
-            'packages': ['gantt']
-        });
-
         function toMilliseconds(hours) {
             return hours * 60 * 60 * 1000 * 3;
         }
@@ -184,12 +191,9 @@ angular.module('aitamApp')
                 }
             };
 
-            var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
-
-            chart.draw(data, options);
+            var projectChart = new google.visualization.Gantt(document.getElementById('chart_div'));
+            projectChart.draw(data, options);
         }
-
-        google.charts.setOnLoadCallback(drawChart);
 
         $scope.save = function () {
             drawChart();

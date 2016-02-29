@@ -8,8 +8,7 @@
         "localforage": "latest",
         "bootstrap": "latest",
         "angular-bootstrap": "latest",
-        "angular-messages": "latest",
-        "angular-google-chart": "latest"
+        "angular-messages": "latest"
     },
     "devDependencies": {
         "angular-mocks": "~1.3.6",

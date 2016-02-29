@@ -8,9 +8,9 @@
  * Controller of the aitamApp
  */
 angular.module('aitamApp')
-    .controller('CreatetaskmodalCtrl', function ($scope, $uibModalInstance, taskList) {
+    .controller('CreatetaskmodalCtrl', function ($scope, $uibModalInstance, taskList, taskCategory) {
         $scope.task = {};
-        $scope.taskCategory = ['Initial Setup', 'UX Design', 'UI Development', 'API Development', 'Unit Testing', 'Testing', 'Other'];
+        $scope.taskCategory = taskCategory;
         $scope.taskList = taskList;
 
         $scope.ok = function () {

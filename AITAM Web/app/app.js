@@ -7,9 +7,17 @@ angular.module('aitamApp', [
     'ui.router',
     'ui.bootstrap',
     'ngMessages',
-    'ngAnimate',
-    'googlechart'
+    'ngAnimate'
 ])
+
+.run(function () {
+    google.charts.load('current', {
+        'packages': ['gantt']
+    });
+    google.charts.setOnLoadCallback(function () {
+        console.log('Google Chart Loaded');
+    });
+})
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {

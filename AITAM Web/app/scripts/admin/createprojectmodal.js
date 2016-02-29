@@ -8,7 +8,7 @@
  * Controller of the aitamApp
  */
 angular.module('aitamApp')
-    .controller('CreateprojectmodalCtrl', function ($scope, $uibModalInstance) {
+    .controller('CreateprojectmodalCtrl', function ($scope, $uibModalInstance, projectCategory) {
 
         $scope.project = {
             category: '',
@@ -18,7 +18,7 @@ angular.module('aitamApp')
         };
 
         //Category
-        $scope.projectCategory = ['WebSite', 'App', 'm.WebSite', 'Extension', 'Internal'];
+        $scope.projectCategory = projectCategory;
 
         //Dates
         $scope.startDate = moment().toDate();

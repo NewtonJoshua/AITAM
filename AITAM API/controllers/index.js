@@ -20,5 +20,7 @@ router.use(function timeLog(req, res, next) {
 });
 
 router.use('/login', require('./login/login'));
+router.use('/settings/getSettings', require('./settings/settings'));
+router.use('/employees', require('./admin/employees'));
 
 module.exports = router;

@@ -67,5 +67,9 @@ module.exports = {
             username: name
         });
     },
+    getAll: function () {
+        console.log('DB', 'fetching employees');
+        return User.find({});
+    },
     encrypt: hash
 };
