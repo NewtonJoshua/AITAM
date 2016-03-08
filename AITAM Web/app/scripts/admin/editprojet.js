@@ -8,109 +8,151 @@
  * Controller of the aitamApp
  */
 angular.module('aitamApp')
-    .controller('EditprojetCtrl', function ($scope, $uibModal, settings) {
+    .controller('EditprojetCtrl', function ($scope, $uibModal, settings, growl, projectService, taskService) {
 
-        $scope.projects = [{
-            id: 1,
-            category: 'App',
-            title: 'AITAM',
-            status: 'Started',
-            startDate: moment('2/28/2016').toDate(),
-            endDate: moment('3/5/2016').toDate(),
-            tasks: []
-                }, {
-            id: 2,
-            category: 'Web Site',
-            title: 'Newton Joshua',
-            status: 'Created',
-            startDate: moment('2/28/2016').toDate(),
-            endDate: moment('3/5/2016').toDate(),
-            tasks: []
-                }, {
-            id: 3,
-            category: 'Internal',
-            title: 'Get Ur App',
-            startDate: moment('2/28/2016').toDate(),
-            endDate: moment('3/5/2016').toDate(),
-            status: 'Created',
-            tasks: []
-                }];
+        $scope.projects = settings.projects;
 
-        $scope.employees = [
-            {
-                name: 'UX Designer',
-                id: '100001',
-                isManager: false
-            },
-            {
-                name: 'UI Developer1',
-                id: '100002',
-                isManager: false
-            },
-            {
-                name: 'UX Developer2',
-                id: '100003',
-                isManager: false
-            },
-            {
-                name: 'API Developer',
-                id: '100004',
-                isManager: false
-            },
-            {
-                name: 'Manager',
-                id: '600006',
-                isManager: true
-            }
-    ];
+        $scope.employees = settings.employees;
 
         //Project
         $scope.selectedProject = {
             title: 'Select Project'
         };
-        $scope.createProject = function () {
 
+        $scope.createProject = function () {
             var modalInstance = $uibModal.open({
-                templateUrl: 'views/admin/createprojectmodal.html',
+                templateUrl: 'views/admin/modals/createprojectmodal.html',
                 controller: 'CreateprojectmodalCtrl',
                 resolve: {
+                    title: function () {
+                        return 'Create New';
+                    },
+                    currrentProject: function () {
+                        return null;
+                    },
                     projectCategory: function () {
-                        return settings.projectCategory;
+                        return settings.settings.projectCategory;
                     }
                 }
             });
 
-            modalInstance.result.then(function (project) {
-                project.tasks = [];
-                $scope.projects.push(project);
-                $scope.display(project);
+            modalInstance.result.then(function (result) {
+                projectService.createProject(result).then(function (project) {
+                    project.tasks = [];
+                    $scope.projects.push(project);
+                    $scope.display(project);
+                    growl.success('Project ' + project.title + ' created');
+                });
             });
 
         };
 
+        $scope.editProject = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/admin/modals/createprojectmodal.html',
+                controller: 'CreateprojectmodalCtrl',
+                resolve: {
+                    title: function () {
+                        return 'Edit';
+                    },
+                    currrentProject: function () {
+                        return $scope.selectedProject;
+                    },
+                    projectCategory: function () {
+                        return settings.settings.projectCategory;
+                    }
+                }
+            });
+            modalInstance.result.then(function (result) {
+                projectService.editProject(result).then(function (project) {
+                    var index = '';
+                    angular.forEach($scope.projects, function (value, key) {
+                        index = value._id === $scope.selectedProject._id ? key : index;
+                    });
+                    $scope.projects[index] = project;
+                    $scope.display($scope.projects[index]);
+                    growl.info('Project ' + project.title + ' modified');
+                });
+            });
+        };
+
         //Task
+
+        $scope.tasks = {
+            selectedTask: ''
+        };
         var taskId = 0;
         $scope.addTask = function () {
             var modalInstance = $uibModal.open({
-                templateUrl: 'views/admin/createtaskmodal.html',
+                templateUrl: 'views/admin/modals/createtaskmodal.html',
                 controller: 'CreatetaskmodalCtrl',
                 resolve: {
                     taskList: function () {
                         return $scope.selectedProject.tasks;
                     },
                     taskCategory: function () {
-                        return settings.taskCategory;
+                        return settings.settings.taskCategory;
+                    },
+                    currentTask: function () {
+                        return null;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (result) {
+                result.project = $scope.selectedProject._id;
+                taskId++;
+                result.displayId = taskId;
+                taskService.createTask(result).then(function (task) {
+                    $scope.selectedProject.tasks.push(task);
+                    growl.success('Task ' + task.title + ' added');
+                });
+            });
+        };
+
+        function findSelectedTaskIndex() {
+            var index = '';
+            angular.forEach($scope.selectedProject.tasks, function (value, key) {
+                index = value.id === $scope.tasks.selectedTask.id ? key : index;
+            });
+            return index;
+        }
+
+        $scope.editTask = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/admin/modals/createtaskmodal.html',
+                controller: 'CreatetaskmodalCtrl',
+                resolve: {
+                    taskList: function () {
+                        return $scope.selectedProject.tasks;
+                    },
+                    taskCategory: function () {
+                        return settings.settings.taskCategory;
+                    },
+                    currentTask: function () {
+                        return $scope.tasks.selectedTask;
                     }
                 }
             });
 
             modalInstance.result.then(function (task) {
-                taskId++;
-                task.id = taskId;
-                $scope.selectedProject.tasks.push(task);
+
+                var index = findSelectedTaskIndex();
+                $scope.selectedProject.tasks[index] = task;
+                growl.info('Task ' + task.title + ' modified');
             });
-
-
+        };
+        $scope.deleteTask = function () {
+            var index = findSelectedTaskIndex();
+            $scope.selectedProject.tasks.splice(index, 1);
+            growl.warning('Task ' + $scope.tasks.selectedTask.title + ' removed');
+            $scope.tasks.selectedTask = null;
+        };
+        $scope.moveTaskUp = function () {
+            console.log($scope.tasks.selectedTask);
+        };
+        $scope.moveTaskDown = function () {
+            console.log($scope.tasks.selectedTask);
         };
 
         //    Hours
@@ -137,16 +179,6 @@ angular.module('aitamApp')
             chartData.push([
                 '100',
                 'Expected',
-                null,
-                moment($scope.selectedProject.startDate).toDate(),
-                moment($scope.selectedProject.endDate).toDate(),
-                null,
-                0,
-                null
-            ]);
-            chartData.push([
-                '101',
-                'Actual',
                 null,
                 moment($scope.selectedProject.startDate).toDate(),
                 moment($scope.selectedProject.endDate).toDate(),
@@ -186,7 +218,9 @@ angular.module('aitamApp')
             data.addRows(chartData);
 
             var options = {
+                height: ($scope.selectedProject.tasks.length + 1) * 30 + 40,
                 gantt: {
+                    trackHeight: 30,
                     defaultStartDateMillis: moment($scope.selectedProject.startDate).toDate()
                 }
             };

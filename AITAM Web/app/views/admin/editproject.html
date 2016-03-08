@@ -19,7 +19,14 @@
                 </div>
 
                 <!-- Project Details-->
-                <h4>Project Details</h4>
+                <div class="input-group">
+                    <h4>Project Details</h4>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="editProject()">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                    </span>
+                </div>
                 <dl>
                     <dt>Category</dt>
                     <dd>{{selectedProject.category}}</dd>
@@ -44,8 +51,20 @@
         <div class="input-group">
             <h4>Tasks</h4>
             <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="addTask()">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <button type="button" class="btn btn-default" ng-click="editTask()">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default" ng-click="deleteTask()">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default" ng-click="moveTaskUp()">
+                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default" ng-click="moveTaskDown()">
+                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default" ng-click="addTask()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
             <button type="button" class="btn btn-default" ng-click="save()">
                 <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span>
@@ -57,20 +76,25 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Category</th>
-                    <th>Title</th>
-                    <th>Priority</th>
-                    <th>Dependent</th>
-                    <th>Assigned To</th>
-                    <th>Assigned Time</th>
-                    <th>Time Taken</th>
-                    <th>Status</th>
-                    <th>Rating</th>
+                    <th class="active">Category</th>
+                    <th class="active">Title</th>
+                    <th class="active">Priority</th>
+                    <th class="active">Dependent</th>
+                    <th class="info">Assigned To</th>
+                    <th class="info">Assigned Time</th>
+                    <th class="warning">Time Taken</th>
+                    <th class="warning">Status</th>
+                    <th class="warning">Rating</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="task in selectedProject.tasks track by $index" class="form-group">
-                    <td>{{task.id}}</td>
+                    <td>
+                        <label>{{task.id}}
+                            <input name="task" type="radio" ng-value="task" ng-model="tasks.selectedTask">
+                        </label>
+
+                    </td>
                     <td>{{task.category}}</td>
                     <td uib-popover="{{task.description}}">{{task.title}}</td>
                     <td>{{task.priority}}</td>

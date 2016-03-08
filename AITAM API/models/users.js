@@ -63,7 +63,7 @@ module.exports = {
     },
     getOne: function (name) {
         console.log('DB', 'fetching details of - ', name);
-        return User.find({
+        return User.findOne({
             username: name
         });
     },

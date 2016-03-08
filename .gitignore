@@ -12,5 +12,6 @@
 *.log
 *.DS_Store
 trial
+*/npm-debug.log
 
 */app/scripts/configuration.js

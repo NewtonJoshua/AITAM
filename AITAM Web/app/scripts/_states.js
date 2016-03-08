@@ -10,7 +10,7 @@ angular
             resolve: {
                 settings: function (setting) {
                     return setting.initiallize().then(function (result) {
-                        return result[0];
+                        return result;
                     });
                 }
             }

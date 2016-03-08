@@ -8,15 +8,23 @@
  * Controller of the aitamApp
  */
 angular.module('aitamApp')
-    .controller('CreateprojectmodalCtrl', function ($scope, $uibModalInstance, projectCategory) {
+    .controller('CreateprojectmodalCtrl', function ($scope, $uibModalInstance, projectCategory, title, currrentProject) {
 
-        $scope.project = {
+        var blankProject = {
             category: '',
             title: '',
             endDate: '',
             startDate: ''
         };
 
+        $scope.project = currrentProject ? angular.copy(currrentProject) : blankProject;
+        if (currrentProject) {
+            $scope.project.startDate = moment($scope.project.startDate).toDate();
+            $scope.project.endDate = moment($scope.project.endDate).toDate();
+        }
+
+        //Title - Create/Edit
+        $scope.title = title;
         //Category
         $scope.projectCategory = projectCategory;
 

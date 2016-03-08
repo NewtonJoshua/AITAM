@@ -14,8 +14,10 @@ module.exports = {
             console.log('CONNECTED', 'User', user.userId, 'Socket:', socket.id, 'Session:', socket.handshake.sessionID);
         });
         socket.on('disconnect', function () {
-            console.log('DISCONNECTED', 'User', sockets[socket.id].user);
-            delete sockets[socket.id];
+            if (sockets[socket.id]) {
+                console.log('DISCONNECTED', 'User', sockets[socket.id].user);
+                delete sockets[socket.id];
+            }
         });
     },
     getSockets: function () {

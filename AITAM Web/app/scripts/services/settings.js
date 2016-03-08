@@ -8,10 +8,17 @@
  * Service in the aitamApp.
  */
 angular.module('aitamApp')
-    .service('setting', function ($http, ENV) {
+    .service('setting', function ($http, ENV, $q) {
+        var settingsReq = $http.post(ENV.apiEndpoint + '/settings/getSettings');
+        var employeesReq = $http.post(ENV.apiEndpoint + '/employees');
+        var projectsReq = $http.post(ENV.apiEndpoint + '/project/getProjects');
         this.initiallize = function () {
-            return $http.post(ENV.apiEndpoint + '/settings/getSettings').then(function (res) {
-                return res.data.settings;
+            return $q.all([settingsReq, employeesReq, projectsReq]).then(function (res) {
+                return {
+                    settings: res[0].data.settings[0],
+                    employees: res[1].data.employees,
+                    projects: res[2].data.projects
+                };
             });
         };
     });

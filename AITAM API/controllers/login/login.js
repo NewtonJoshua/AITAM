@@ -19,7 +19,7 @@ router.post('/', function (req, res) {
         if (result.length === 0) {
             response = 'wrongUserName';
         } else {
-            response = result[0].password === user.encrypt(req.body.password) ? result[0].name : 'wrongPassword';
+            response = result.password === user.encrypt(req.body.password) ? result.name : 'wrongPassword';
         }
         res.send({
             login: response

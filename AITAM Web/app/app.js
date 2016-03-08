@@ -7,17 +7,9 @@ angular.module('aitamApp', [
     'ui.router',
     'ui.bootstrap',
     'ngMessages',
-    'ngAnimate'
+    'ngAnimate',
+    'angular-growl'
 ])
-
-.run(function () {
-    google.charts.load('current', {
-        'packages': ['gantt']
-    });
-    google.charts.setOnLoadCallback(function () {
-        console.log('Google Chart Loaded');
-    });
-})
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -37,6 +29,13 @@ angular.module('aitamApp', [
     });
 })
 
+.config(['growlProvider', function (growlProvider) {
+    growlProvider.onlyUniqueMessages(false);
+    growlProvider.globalTimeToLive(5000);
+    growlProvider.globalDisableCountDown(true);
+    growlProvider.globalPosition('top-right');
+}])
+
 .config(function ($httpProvider) {
     $httpProvider.interceptors.push(function ($rootScope) {
         return {
@@ -52,31 +51,26 @@ angular.module('aitamApp', [
     });
 })
 
-.run(function ($rootScope, $ionicLoading) {
-    $rootScope.$on('loading:show', function () {
-        $ionicLoading.show({
-            // The text to display in the loading indicator
-            content: '<i class=icon ion-ios7-refreshing></i> Loading',
-
-            // The animation to use
-            animation: 'fade-in',
-
-            // Will a dark overlay or backdrop cover the entire view
-            showBackdrop: false,
-
-            // The maximum width of the loading indicator
-            // Text will be wrapped if longer than maxWidth
-            maxWidth: 200,
-
-            // The delay in showing the indicator
-            showDelay: 10
-        });
-    });
-
-    $rootScope.$on('loading:hide', function () {
-        $ionicLoading.hide();
-    });
-})
+//.run(function ($rootScope, $ionicLoading) {
+//    $rootScope.$on('loading:show', function () {
+//    $ionicLoading.show({
+//        // The text to display in the loading indicator
+//        content: '<i class="glyphicon glyphicon-floppy-saved"></i> Loading',
+//
+//        // The animation to use
+//        animation: 'fade-in',
+//
+//        // Will a dark overlay or backdrop cover the entire view
+//        showBackdrop: false,
+//
+//        // The maximum width of the loading indicator
+//        // Text will be wrapped if longer than maxWidth
+//        maxWidth: 200,
+//
+//        // The delay in showing the indicator
+//        showDelay: 10
+//    });
+//});
 
 .config(['$localForageProvider', function ($localForageProvider) {
     $localForageProvider.setNotify(true, true); // itemSet, itemRemove
