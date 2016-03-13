@@ -21,10 +21,11 @@ router.post('/edit', function (req, res) {
 });
 
 router.post('/getProjects', function (req, res) {
-    project.getAll().then(function (result) {
+    project.getAll().then(function (projects) {
         res.send({
-            projects: result
+            projects: projects
         });
     });
 });
+
 module.exports = router;

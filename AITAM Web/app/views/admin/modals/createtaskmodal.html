@@ -61,7 +61,7 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dependentTask">
                         <li ng-click="task.dependentTask=''"><a href="#">None</a></li>
-                        <li ng-repeat="thisTask in taskList track by $index" ng-click="task.dependentTask=thisTask.id"><a href="#">{{thisTask.id}} : {{thisTask.title}}</a></li>
+                        <li ng-repeat="thisTask in taskList track by $index" ng-click="task.dependentTask=thisTask.displayId"><a href="#">{{thisTask.displayId}} : {{thisTask.title}}</a></li>
                     </ul>
                 </div>
             </td>

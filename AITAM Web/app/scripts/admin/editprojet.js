@@ -8,11 +8,23 @@
  * Controller of the aitamApp
  */
 angular.module('aitamApp')
-    .controller('EditprojetCtrl', function ($scope, $uibModal, settings, growl, projectService, taskService) {
+    .controller('EditprojetCtrl', function ($scope, $uibModal, $filter, settings, growl, projectService, taskService) {
 
         $scope.projects = settings.projects;
 
         $scope.employees = settings.employees;
+
+        var tasks = settings.tasks;
+
+        $scope.projects.forEach(function (project, projectIndex) {
+            project.tasks.forEach(function (projectTask, taskIndex) {
+                tasks.forEach(function (task) {
+                    if (projectTask === task._id) {
+                        $scope.projects[projectIndex].tasks[taskIndex] = task;
+                    }
+                });
+            });
+        });
 
         //Project
         $scope.selectedProject = {
@@ -81,7 +93,7 @@ angular.module('aitamApp')
         $scope.tasks = {
             selectedTask: ''
         };
-        var taskId = 0;
+        var taskId = 1;
         $scope.addTask = function () {
             var modalInstance = $uibModal.open({
                 templateUrl: 'views/admin/modals/createtaskmodal.html',
@@ -135,11 +147,12 @@ angular.module('aitamApp')
                 }
             });
 
-            modalInstance.result.then(function (task) {
-
+            modalInstance.result.then(function (result) {
                 var index = findSelectedTaskIndex();
-                $scope.selectedProject.tasks[index] = task;
-                growl.info('Task ' + task.title + ' modified');
+                taskService.editTask(result).then(function (task) {
+                    $scope.selectedProject.tasks[index] = task;
+                    growl.info('Task ' + task.title + ' modified');
+                });
             });
         };
         $scope.deleteTask = function () {
@@ -189,7 +202,7 @@ angular.module('aitamApp')
 
             angular.forEach($scope.selectedProject.tasks, function (task) {
                 chartData.push([
-                    task.id.toString(),
+                    task.displayId.toString(),
                     task.title,
                     task.assignedTo ? task.assignedTo.name : null,
                     task.dependentTask ? null : moment($scope.selectedProject.startDate).toDate(),
@@ -229,10 +242,6 @@ angular.module('aitamApp')
             projectChart.draw(data, options);
         }
 
-        $scope.save = function () {
-            drawChart();
-        };
-
         $scope.display = function (project) {
             $scope.selectedProject = project;
             drawChart();
@@ -244,5 +253,45 @@ angular.module('aitamApp')
         } else if (window.attachEvent) {
             window.attachEvent('onresize', drawChart);
         }
+        $scope.edited = function () {
+            console.log('edited');
+        };
+
+        $scope.save = function () {
+            if ($scope.selectedProject.editedTasks.length > 0) {
+                taskService.editTasks($scope.selectedProject.editedTasks).then(function (tasks) {
+                    angular.forEach(tasks, function (editedTask) {
+                        angular.forEach($scope.selectedProject.tasks, function (task, key) {
+                            if (task.displayId === editedTask.displayId) {
+                                growl.info('Task ' + task.title + ' modified');
+                                $scope.selectedProject.tasks[key] = task;
+                            }
+                        });
+                    });
+                    $scope.selectedProject.editedTasks = [];
+                    drawChart();
+                });
+            }
+        };
+
+        $scope.$watch('selectedProject.tasks', function (newValue, oldValue) {
+            if (oldValue) {
+                $scope.selectedProject.editedTasks = $scope.selectedProject.editedTasks ? $scope.selectedProject.editedTasks : [];
+                $filter('filter')(newValue, function (value, index) {
+                    if (!angular.equals(value, oldValue[index])) {
+                        var taskExist = false;
+                        angular.forEach($scope.selectedProject.editedTasks, function (editedTask, key) {
+                            if (editedTask.displayId === value.displayId) {
+                                $scope.selectedProject.editedTasks[key] = value;
+                                taskExist = true;
+                            }
+                        });
+                        if (!taskExist) {
+                            $scope.selectedProject.editedTasks.push(value);
+                        }
+                    }
+                });
+            }
+        }, true);
 
     });

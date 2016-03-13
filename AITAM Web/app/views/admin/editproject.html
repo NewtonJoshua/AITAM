@@ -90,7 +90,7 @@
             <tbody>
                 <tr ng-repeat="task in selectedProject.tasks track by $index" class="form-group">
                     <td>
-                        <label>{{task.id}}
+                        <label>{{task.displayId}}
                             <input name="task" type="radio" ng-value="task" ng-model="tasks.selectedTask">
                         </label>
 
@@ -107,7 +107,7 @@
                                 <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
                             </a>
                         </script>
-                        <input type="text" ng-model="task.assignedTo" placeholder="Custom template" uib-typeahead="employee as employee.name for employee in employees | filter:{name:$viewValue}" typeahead-template-url="customTemplate.html" class="form-control" typeahead-show-hint="true" typeahead-min-length="0">
+                        <input type="text" ng-model="task.assignedTo" placeholder="Select" uib-typeahead="employee as employee.name for employee in employees | filter:{name:$viewValue}" typeahead-template-url="customTemplate.html" class="form-control" typeahead-show-hint="true" typeahead-min-length="0">
                     </td>
                     <td>
                         <!--                        Assigned Time-->
@@ -120,7 +120,7 @@
                                         </a>
                                     </td>
                                     <td class="form-group uib-time hours">
-                                        <input style="width:50px;" type="text" placeholder="HH" ng-model="task.assignedTime" class="form-control text-center" maxlength="2" ng-readonly="true" ng-init="task.assignedTime=1">
+                                        <input style="width:50px;" type="text" placeholder="HH" ng-model="task.assignedTime" class="form-control text-center" maxlength="2" ng-readonly="true">
                                     </td>
                                     <td class="uib-decrement hours">
                                         <a ng-click="incrementHours(task)" class="btn btn-link">

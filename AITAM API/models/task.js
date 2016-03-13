@@ -14,7 +14,7 @@ var taskSchema = new Schema({
         required: true
     },
     description: String,
-    projet: String,
+    project: String,
     priority: {
         type: String,
         required: true
@@ -29,8 +29,14 @@ var taskSchema = new Schema({
         required: true,
         default: 'Created'
     },
-    assignedTo: String,
-    assignedTime: Number,
+    assignedTo: {
+        name: String,
+        _id: String
+    },
+    assignedTime: {
+        type: Number,
+        default: 4
+    },
     timeTaken: Number,
     rating: Number,
     createdAt: Date,
@@ -74,6 +80,14 @@ module.exports = {
         console.log('DB', 'fetching Task details of - ', title);
         return Task.findOne({
             title: title
+        });
+    },
+    getProjectTasks: function (projectIds) {
+        console.log('DB', 'fetching Task details of - ', projectIds);
+        return Task.findOne({
+            project: {
+                $in: projectIds
+            }
         });
     },
     getAll: function () {
