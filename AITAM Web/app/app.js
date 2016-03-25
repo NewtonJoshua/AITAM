@@ -8,7 +8,8 @@ angular.module('aitamApp', [
     'ui.bootstrap',
     'ngMessages',
     'ngAnimate',
-    'angular-growl'
+    'angular-growl',
+    'angular-loading-bar'
 ])
 
 .run(function ($ionicPlatform) {
@@ -51,26 +52,9 @@ angular.module('aitamApp', [
     });
 })
 
-//.run(function ($rootScope, $ionicLoading) {
-//    $rootScope.$on('loading:show', function () {
-//    $ionicLoading.show({
-//        // The text to display in the loading indicator
-//        content: '<i class="glyphicon glyphicon-floppy-saved"></i> Loading',
-//
-//        // The animation to use
-//        animation: 'fade-in',
-//
-//        // Will a dark overlay or backdrop cover the entire view
-//        showBackdrop: false,
-//
-//        // The maximum width of the loading indicator
-//        // Text will be wrapped if longer than maxWidth
-//        maxWidth: 200,
-//
-//        // The delay in showing the indicator
-//        showDelay: 10
-//    });
-//});
+.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+  }])
 
 .config(['$localForageProvider', function ($localForageProvider) {
     $localForageProvider.setNotify(true, true); // itemSet, itemRemove

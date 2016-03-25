@@ -15,6 +15,16 @@ router.post('/create', function (req, res) {
     });
 });
 
+router.post('/delete', function (req, res) {
+    task.delete(req.body).then(function (result) {
+        project.deleteTask(result).then(function (result) {
+            res.send({
+                deleted: result
+            });
+        });
+    });
+});
+
 router.post('/edit', function (req, res) {
     task.update(req.body).then(function (result) {
         res.send({

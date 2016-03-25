@@ -91,8 +91,23 @@ module.exports = {
         }, {
             new: true
         }).then(function (result) {
-            console.log('DB: Task', task.title, ' - is added to Project ', result.title);
+            console.log('DB: Task', task.title, ' - is added to Project ', task.project);
             return result;
+        });
+    },
+    deleteTask: function (task) {
+        task.updatedAt = new Date();
+        return Project.update({
+            _id: task.project
+        }, {
+            $pull: {
+                tasks: task._id
+            }
+        }, {
+            new: true
+        }).then(function () {
+            console.log('DB: Task', task.title, ' - is removed from Project ', task.project);
+            return true;
         });
     }
 };

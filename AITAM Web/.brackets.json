@@ -4,6 +4,7 @@
         "A:/AITAM/AITAM Web/app/bower_components/ionic/demos/directive/slideBox/appIntro/test.scenario.js",
         "A:/AITAM/AITAM Web/app/bower_components/google-chart/loader.js",
         "A:/AITAM/AITAM Web/app/bower_components/ionic/demos/directive/tabs/tabsAndNav/index.js",
-        "A:/AITAM/AITAM Web/app/scripts/task/_states.js"
+        "A:/AITAM/AITAM Web/app/scripts/task/_states.js",
+        "A:/AITAM/AITAM Web/app/bower_components/ionic/demos/old/actionsheet/script.js"
     ]
 }

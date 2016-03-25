@@ -8,7 +8,8 @@
  * Controller of the aitamApp
  */
 angular.module('aitamApp')
-    .controller('CreatetaskmodalCtrl', function ($scope, $uibModalInstance, taskList, taskCategory, currentTask) {
+    .controller('CreatetaskmodalCtrl', function ($scope, $uibModalInstance, taskList, taskCategory, currentTask, title) {
+        $scope.title = title;
         $scope.task = currentTask ? angular.copy(currentTask) : {};
         $scope.taskCategory = taskCategory;
         $scope.taskList = taskList;

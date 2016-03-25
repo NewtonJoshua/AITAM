@@ -22,7 +22,7 @@
                 <div class="input-group">
                     <h4>Project Details</h4>
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="editProject()">
+                        <button type="button" class="btn btn-info" ng-click="editProject()">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </button>
                     </span>
@@ -51,10 +51,14 @@
         <div class="input-group">
             <h4>Tasks</h4>
             <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="editTask()">
-                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                
+            <button type="button" class="btn btn-info" ng-click="addTask()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-default" ng-click="deleteTask()">
+            <button type="button" class="btn btn-info" ng-click="editTask()">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-danger" ng-click="deleteTask()">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </button>
             <button type="button" class="btn btn-default" ng-click="moveTaskUp()">
@@ -63,10 +67,7 @@
             <button type="button" class="btn btn-default" ng-click="moveTaskDown()">
                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-default" ng-click="addTask()">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="btn btn-default" ng-click="save()">
+            <button type="button" class="btn btn-success" ng-click="save()">
                 <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span>
             </button>
             </span>
@@ -88,12 +89,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="task in selectedProject.tasks track by $index" class="form-group">
+                <tr ng-repeat="task in selectedProject.tasks track by $index" class="form-group" ng-class="{warning: isTaskEdited(task)}">
                     <td>
-                        <label>{{task.displayId}}
-                            <input name="task" type="radio" ng-value="task" ng-model="tasks.selectedTask">
+                        <label>
+                            <input name="task" type="radio" ng-value="task" ng-model="tasks.selectedTask"> {{task.displayId}}
                         </label>
-
                     </td>
                     <td>{{task.category}}</td>
                     <td uib-popover="{{task.description}}">{{task.title}}</td>

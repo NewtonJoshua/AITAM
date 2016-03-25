@@ -9,10 +9,6 @@ var taskSchema = new Schema({
         type: String,
         required: true
     },
-    displayId: {
-        type: Number,
-        required: true
-    },
     description: String,
     project: String,
     priority: {
@@ -97,5 +93,12 @@ module.exports = {
                 '$ne': 'Completed'
             }
         });
+    },
+    delete: function (task) {
+        return Task.findByIdAndRemove(task._id).then(function (result) {
+            console.log('DB', 'removing task -', task.title);
+            return result;
+        });
+
     }
 };

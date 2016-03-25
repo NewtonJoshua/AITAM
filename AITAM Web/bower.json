@@ -5,11 +5,12 @@
         "ionic": "latest",
         "ngCordova": "latest",
         "angular-localforage": "latest",
-        "localforage": "latest",
-        "bootstrap": "latest",
-        "angular-bootstrap": "latest",
-        "angular-messages": "latest",
-        "angular-growl-v2": "latest"
+        "localforage": "1.2.10",
+        "bootstrap": "3.3.6",
+        "angular-bootstrap": "1.1.2",
+        "angular-messages": "1.5.0",
+        "angular-growl-v2": "0.7.9",
+        "angular-loading-bar": "0.9.0"
     },
     "devDependencies": {
         "angular-mocks": "~1.3.6",
