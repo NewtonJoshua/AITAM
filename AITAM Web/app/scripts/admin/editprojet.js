@@ -33,7 +33,8 @@ angular.module('aitamApp')
 
         //Project
         $scope.selectedProject = {
-            title: 'Select Project'
+            title: 'Select Project',
+            _id: null
         };
 
         $scope.createProject = function () {
@@ -94,6 +95,37 @@ angular.module('aitamApp')
             });
         };
 
+        $scope.deleteProject = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/admin/modals/deletemodal.html',
+                controller: 'DeletemodalCtrl',
+                resolve: {
+                    selectedTitle: function () {
+                        return $scope.selectedProject.title;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (result) {
+                if (result) {
+                    projectService.deleteProject($scope.selectedProject).then(function () {
+                        growl.error('Project ' + $scope.selectedProject.title + ' removed');
+                        $scope.selectedProject = {
+                            title: 'Select Project',
+                            _id: null
+                        };
+                        var projectIndex = '';
+                        angular.forEach($scope.projects, function (value, key) {
+                            projectIndex = value._id === $scope.selectedProject._id ? key : projectIndex;
+                        });
+                        $scope.projects.splice(projectIndex, 1);
+                        document.getElementById('chart_div').innerHTML = '';
+                    });
+                }
+            });
+
+        };
+
         //Task
 
         $scope.tasks = {
@@ -124,6 +156,8 @@ angular.module('aitamApp')
                 taskService.createTask(result).then(function (task) {
                     task.displayId = $scope.selectedProject.tasks.length + 1;
                     $scope.selectedProject.tasks.push(task);
+                    tasks.push(task);
+                    drawChart();
                     growl.success('Task ' + task.title + ' added');
                 });
             });
@@ -136,6 +170,8 @@ angular.module('aitamApp')
             });
             return index;
         }
+
+        var lastEditedTask = null;
 
         $scope.editTask = function () {
             var modalInstance = $uibModal.open({
@@ -160,7 +196,10 @@ angular.module('aitamApp')
             modalInstance.result.then(function (result) {
                 var index = findSelectedTaskIndex();
                 taskService.editTask(result).then(function (task) {
+                    lastEditedTask = task._id;
                     $scope.selectedProject.tasks[index] = task;
+                    setTaskIndex();
+                    drawChart();
                     growl.info('Task ' + task.title + ' modified');
                 });
             });
@@ -168,14 +207,11 @@ angular.module('aitamApp')
 
         $scope.deleteTask = function () {
             var modalInstance = $uibModal.open({
-                templateUrl: 'views/admin/modals/deletetaskmodal.html',
-                controller: 'DeletetaskmodalCtrl',
+                templateUrl: 'views/admin/modals/deletemodal.html',
+                controller: 'DeletemodalCtrl',
                 resolve: {
-                    selectedTaskTitle: function () {
+                    selectedTitle: function () {
                         return $scope.tasks.selectedTask.title;
-                    },
-                    selectedTaskDisplayId: function () {
-                        return $scope.tasks.selectedTask.displayId;
                     }
                 }
             });
@@ -185,9 +221,8 @@ angular.module('aitamApp')
                     taskService.deleteTask($scope.tasks.selectedTask).then(function () {
                         var index = findSelectedTaskIndex();
                         $scope.selectedProject.tasks.splice(index, 1);
-                        $scope.selectedProject.tasks.forEach(function (projectTask, taskIndex) {
-                            projectTask.displayId = taskIndex + 1;
-                        });
+                        setTaskIndex();
+                        drawChart();
                         growl.warning('Task ' + $scope.tasks.selectedTask.title + ' removed');
                         $scope.tasks.selectedTask = null;
                     });
@@ -195,11 +230,29 @@ angular.module('aitamApp')
             });
 
         };
+
         $scope.moveTaskUp = function () {
-            console.log($scope.tasks.selectedTask);
+            var index = findSelectedTaskIndex();
+            if (index !== 0) {
+                $scope.selectedProject.movedTasks = $scope.selectedProject.movedTasks ?
+                    $scope.selectedProject.movedTasks : [];
+                $scope.selectedProject.tasks.splice(index, 1);
+                $scope.selectedProject.tasks.splice(index - 1, 0, $scope.tasks.selectedTask);
+                setTaskIndex();
+                $scope.selectedProject.movedTasks.push($scope.tasks.selectedTask._id);
+            }
         };
+
         $scope.moveTaskDown = function () {
-            console.log($scope.tasks.selectedTask);
+            var index = findSelectedTaskIndex();
+            if (index !== $scope.selectedProject.tasks.length - 1) {
+                $scope.selectedProject.movedTasks = $scope.selectedProject.movedTasks ?
+                    $scope.selectedProject.movedTasks : [];
+                $scope.selectedProject.tasks.splice(index, 1);
+                $scope.selectedProject.tasks.splice(index + 1, 0, $scope.tasks.selectedTask);
+                setTaskIndex();
+                $scope.selectedProject.movedTasks.push($scope.tasks.selectedTask._id);
+            }
         };
 
         //    Hours
@@ -293,7 +346,8 @@ angular.module('aitamApp')
         };
 
         $scope.save = function () {
-            if ($scope.selectedProject.editedTasks.length > 0) {
+            if ($scope.selectedProject.editedTasks &&
+                $scope.selectedProject.editedTasks.length > 0) {
                 taskService.editTasks($scope.selectedProject.editedTasks).then(function (tasks) {
                     angular.forEach(tasks, function (editedTask) {
                         angular.forEach($scope.selectedProject.tasks, function (task, key) {
@@ -307,13 +361,31 @@ angular.module('aitamApp')
                     drawChart();
                 });
             }
+            if ($scope.selectedProject.movedTasks &&
+                $scope.selectedProject.movedTasks.length > 0) {
+                projectService.editProject($scope.selectedProject).then(function (project) {
+                    var index = '';
+                    angular.forEach($scope.projects, function (value, key) {
+                        index = value._id === $scope.selectedProject._id ? key : index;
+                    });
+                    $scope.projects[index] = project;
+                    mapTasks();
+                    $scope.display($scope.projects[index]);
+                    $scope.selectedProject.movedTasks = [];
+                    growl.info('Tasks order modified');
+                });
+            }
         };
 
         $scope.$watch('selectedProject.tasks', function (newValue, oldValue) {
-            if (oldValue) {
-                $scope.selectedProject.editedTasks = $scope.selectedProject.editedTasks ? $scope.selectedProject.editedTasks : [];
-                $filter('filter')(newValue, function (value, index) {
-                    if (!angular.equals(value, oldValue[index])) {
+            if (oldValue && $scope.selectedProject) {
+                $scope.selectedProject.editedTasks = $scope.selectedProject.editedTasks ?
+                    $scope.selectedProject.editedTasks : [];
+                $filter('filter')(newValue, function (value) {
+                    var newVersion = angular.copy(value);
+                    newVersion.displayId = '';
+                    var oldVersion = findInCollection(oldValue, value._id);
+                    if (oldVersion && !angular.equals(newVersion, oldVersion) && lastEditedTask !== newVersion._id) {
                         var taskExist = false;
                         angular.forEach($scope.selectedProject.editedTasks, function (editedTask, key) {
                             if (editedTask._id === value._id) {
@@ -324,6 +396,8 @@ angular.module('aitamApp')
                         if (!taskExist) {
                             $scope.selectedProject.editedTasks.push(value);
                         }
+                    } else if (lastEditedTask === newVersion._id) {
+                        lastEditedTask = null;
                     }
                 });
             }
@@ -334,5 +408,47 @@ angular.module('aitamApp')
                 return $scope.selectedProject.editedTasks.indexOf(task) !== -1;
             }
         };
+
+        $scope.isTaskMoved = function (task) {
+            if ($scope.selectedProject.movedTasks) {
+                return $scope.selectedProject.movedTasks.indexOf(task._id) !== -1;
+            }
+        };
+
+        function findInCollection(collection, id) {
+            var queriedTask;
+            collection.every(function (item) {
+                if (item._id === id) {
+                    item.displayId = '';
+                    queriedTask = item;
+                    return false;
+                }
+                return true;
+            });
+            return queriedTask;
+        }
+
+        function setTaskIndex() {
+            $scope.selectedProject.tasks.forEach(function (projectTask, taskIndex) {
+                projectTask.displayId = taskIndex + 1;
+            });
+        }
+
+        $scope.disableTaskActivity = function () {
+            return !$scope.tasks.selectedTask;
+        };
+
+        $scope.getTaskToolTip = function () {
+            return $scope.disableTaskActivity() ? 'select a task' : null;
+        };
+
+        $scope.disableSave = function () {
+            return !(($scope.selectedProject.editedTasks && $scope.selectedProject.editedTasks.length !== 0) || ($scope.selectedProject.movedTasks && $scope.selectedProject.movedTasks.length !== 0));
+        };
+
+        $scope.getSaveToolTip = function () {
+            return $scope.disableSave() ? 'Tasks not modified' : null;
+        };
+
 
     });

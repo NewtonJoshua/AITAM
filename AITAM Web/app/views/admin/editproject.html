@@ -1,5 +1,6 @@
 <div class="panel panel-primary">
-    <div class="panel-heading">Project</div>
+    <div class="panel-heading">Project
+    </div>
     <div class="panel-body">
         <div class="row">
 
@@ -13,25 +14,29 @@
                     </button>
                     <ul uib-dropdown-menu role="menu" aria-labelledby="split-button">
                         <li role="menuitem" ng-click="createProject()"><a>Create Project</a></li>
-                        <li class="divider"></li>
+                        <li class="divider" ng-if="projects"></li>
                         <li role="menuitem" ng-repeat="project in projects" ng-click="display(project)"><a>{{project.title}}</a></li>
                     </ul>
                 </div>
 
                 <!-- Project Details-->
-                <div class="input-group">
-                    <h4>Project Details</h4>
+                <div class="input-group" ng-if="selectedProject._id">
+                    <h4>Project</h4>
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-info" ng-click="editProject()">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        <button type="button" class="btn btn-success" ng-click="pinProject()">
+                            <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-info" ng-click="editProject()">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger" ng-click="deleteProject()">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </button>
                     </span>
                 </div>
-                <dl>
+                <dl ng-if="selectedProject._id">
                     <dt>Category</dt>
                     <dd>{{selectedProject.category}}</dd>
-                    <dt>Title</dt>
-                    <dd>{{selectedProject.title}}</dd>
                     <dt>Status</dt>
                     <dd>{{selectedProject.status}}</dd>
                     <dt>Start Date</dt>
@@ -48,32 +53,32 @@
         </div>
 
         <!--        Tasks-->
-        <div class="input-group">
+        <div class="input-group" ng-if="selectedProject._id">
             <h4>Tasks</h4>
             <span class="input-group-btn">
                 
             <button type="button" class="btn btn-info" ng-click="addTask()">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-info" ng-click="editTask()">
+            <button type="button" class="btn btn-info" ng-click="editTask()" ng-disabled="disableTaskActivity()" data-toggle="tooltip" title="{{getTaskToolTip()}}">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-danger" ng-click="deleteTask()">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            <button type="button" class="btn btn-danger" ng-click="deleteTask()" ng-disabled="disableTaskActivity()" data-toggle="tooltip" title="{{getTaskToolTip()}}">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-default" ng-click="moveTaskUp()">
+            <button type="button" class="btn btn-default" ng-click="moveTaskUp()" ng-disabled="disableTaskActivity()" data-toggle="tooltip" title="{{getTaskToolTip()}}">
                 <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-default" ng-click="moveTaskDown()">
+            <button type="button" class="btn btn-default" ng-click="moveTaskDown()" ng-disabled="disableTaskActivity()" data-toggle="tooltip" title="{{getTaskToolTip()}}">
                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-success" ng-click="save()">
+            <button type="button" class="btn btn-success" ng-click="save()" ng-disabled="disableSave()" data-toggle="tooltip" title="{{getSaveToolTip()}}">
                 <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span>
             </button>
             </span>
         </div>
 
-        <table class="table table-hover table-condensed table-responsive table-bordered">
+        <table class="table table-hover table-condensed table-responsive table-bordered" ng-if="selectedProject._id">
             <thead>
                 <tr>
                     <th>#</th>
@@ -89,7 +94,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="task in selectedProject.tasks track by $index" class="form-group" ng-class="{warning: isTaskEdited(task)}">
+                <tr ng-repeat="task in selectedProject.tasks track by $index" class="form-group" ng-class="{warning: isTaskEdited(task), active:isTaskMoved(task)}">
                     <td>
                         <label>
                             <input name="task" type="radio" ng-value="task" ng-model="tasks.selectedTask"> {{task.displayId}}

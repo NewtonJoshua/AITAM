@@ -8,11 +8,9 @@
  * Controller of the aitamApp
  */
 angular.module('aitamApp')
-    .controller('DeletetaskmodalCtrl', function ($scope, $uibModalInstance, selectedTaskTitle, selectedTaskDisplayId) {
+    .controller('DeletemodalCtrl', function ($scope, $uibModalInstance, selectedTitle) {
 
-        $scope.title = selectedTaskTitle;
-
-        $scope.displayId = selectedTaskDisplayId;
+        $scope.title = selectedTitle;
 
         $scope.ok = function () {
             $uibModalInstance.close(true);

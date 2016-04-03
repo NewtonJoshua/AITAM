@@ -109,5 +109,12 @@ module.exports = {
             console.log('DB: Task', task.title, ' - is removed from Project ', task.project);
             return true;
         });
+    },
+    delete: function (project) {
+        return Project.findByIdAndRemove(project._id).then(function (result) {
+            console.log('DB', 'removing project -', project.title);
+            return result;
+        });
+
     }
 };

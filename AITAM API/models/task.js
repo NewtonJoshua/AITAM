@@ -99,6 +99,15 @@ module.exports = {
             console.log('DB', 'removing task -', task.title);
             return result;
         });
-
+    },
+    deleteTasks: function (tasks) {
+        return Task.remove({
+            _id: {
+                $in: tasks
+            }
+        }).then(function (result) {
+            console.log('DB', 'removing ', result.result.n, ' tasks');
+            return result;
+        });
     }
 };

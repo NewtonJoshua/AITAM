@@ -19,4 +19,9 @@ angular.module('aitamApp')
                 return res.data.project;
             });
         };
+        this.deleteProject = function (project) {
+            return $http.post(ENV.apiEndpoint + '/project/delete', project).then(function (res) {
+                return res.data.project;
+            });
+        };
     });
