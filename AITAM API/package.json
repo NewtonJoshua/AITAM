@@ -16,7 +16,9 @@
         "mongoose": "latest",
         "socket.io": "latest",
         "connect-mongo": "latest",
-        "express-socket.io-session": "latest"
+        "express-socket.io-session": "latest",
+        "express-session": "latest",
+        "nodemon": "latest"
     },
     "repository": {
         "type": "git",
